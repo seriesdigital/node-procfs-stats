@@ -21,6 +21,14 @@ module.exports = function(pid,cb){ // or task: ":pid/task/:tid"
           cb(false,assoc(module.exports.fields['/proc/:pid/statm'],values))
       })
     },
+    // control group information
+    cgroups:function(cb){
+      fs.readFile('/proc/'+pid+'/cgroup',function(err,buf){
+        if(err) return cb(err);
+        var values = buf.toString().trim().split(":")
+        cb(false,assoc(module.exports.fields['/proc/:pid/cgroup'],values))
+      })
+    },
     // status is a human version of most but not all of the data in both stat and statm
     status:function(cb){
       fs.readFile('/proc/'+pid+'/status',function(err,buf){
