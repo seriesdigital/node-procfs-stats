@@ -294,7 +294,7 @@ function cg(buf){
   lines.forEach(function(l){
     var matches = l.split(":");
     if(!matches) return;
-    info[matches[0]] = matches[1];
+    info[matches[1]] = matches[2];
   });
   return info;
 }
