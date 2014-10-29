@@ -274,6 +274,7 @@ function assoc(fields,values){
   return o;
 }
 
+// split colon seperated lines into JSON key/values
 function kv(buf){
   if(!buf) return false;
   var info = {};
