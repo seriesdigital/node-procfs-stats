@@ -21,18 +21,17 @@ module.exports = function(pid,cb){ // or task: ":pid/task/:tid"
           cb(false,assoc(module.exports.fields['/proc/:pid/statm'],values))
       })
     },
-    // control group information
-    cgroups:function(cb){
-      fs.readFile('/proc/'+pid+'/cgroup',function(err,buf){
-        if(err) return cb(err);
-        var values = buf.toString().trim().split(":")
-        cb(false,assoc(module.exports.fields['/proc/:pid/cgroup'],values))
-      })
-    },
     // status is a human version of most but not all of the data in both stat and statm
     status:function(cb){
       fs.readFile('/proc/'+pid+'/status',function(err,buf){
         cb(err,kv(buf));
+      });
+    },
+    // control group information
+    cgroups:function(cb){
+      fs.readFile('/proc/'+pid+'/cgroup',function(err,buf){
+        if(err) return cb(err);
+        cb(false,cg(buf));
       });
     },
     argv:function(cb){ 
@@ -287,6 +286,18 @@ function kv(buf){
   return info;
 }
 
+// split cgroup information into key/values
+function cg(buf){
+  if(!buf) return false;
+  var info = {};
+  var lines = buf.toString().split("\n");
+  lines.forEach(function(l){
+    var matches = l.split(":");
+    if(!matches) return;
+    info[matches[0]] = matches[1];
+  });
+  return info;
+}
 
 function nettable(data){
   if(!data) return false;
