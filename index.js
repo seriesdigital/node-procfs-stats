@@ -261,6 +261,13 @@ module.exports.fields = {
 // works on linuxy /proc
 module.exports.works = fs.existsSync('/proc/'+process.pid+'/stat');
 
+// control groups
+module.exports.cgroups = function(cb) {
+  fs.readFile("/proc/cgroups", function(err,buf) {
+    cb(err,controlgroups(buf));
+  });
+}
+
 function assoc(fields,values){
   var o = {};
   var a = 0;
@@ -286,7 +293,7 @@ function kv(buf){
   return info;
 }
 
-// split cgroup information into key/values
+// split a single process's cgroup information into key/values
 function cg(buf){
   if(!buf) return false;
   var info = {};
@@ -295,6 +302,19 @@ function cg(buf){
     var matches = l.split(":");
     if(!matches) return;
     info[matches[1]] = matches[2];
+  });
+  return info;
+}
+
+// list all control groups available from the kernel
+function controlgroups(buf){
+  if(!buf) return false;
+  var info = {};
+  var lines = buf.toString().split("\n");
+  lines.forEach(function(l){
+    var matches = l.split(/\s+/);
+    if(!matches) return;
+    info[matches[0]] = [matches[1],matches[2],matches[3]]; 
   });
   return info;
 }
