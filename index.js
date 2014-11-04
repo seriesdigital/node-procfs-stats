@@ -403,3 +403,22 @@ function nulldelim(buf){
   args.pop();// remove trailing empty.
   return args; 
 }
+
+function cgroup_limits( subsys_name, data){
+  // subsys_name is a token specifying the resource type as found in the output of /proc/cgroups
+  // data is an object of the cgroups associated with a particular PID
+  if (subsys_name == data['foo']) {
+    console.log("not a valid control group name, check against the list in /proc/cgroups");
+    exit(1);
+  }
+  group_dir = '/sys/fs/cgroup/'+sybsys_name+data;
+  limit_names = fs.readdirSync(group_dir);
+  limits = {};
+  limit_names.map(function(v,i,a) {
+    fs.readFile(group_dir+'/'+v,{"encoding":'utf-8'},function(err,data){
+      if(err) throw err;
+      limits[v] = data; 
+    });
+  });
+  return limits;
+}
