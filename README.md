@@ -30,6 +30,7 @@ it would be so cool to have a higher level module that unifies system monitoring
  * <a href="#pidstats-statm">ps.statm(cb)</a>
  * <a href="#pidstats-status">ps.status(cb)</a>
  * <a href="#pidstats-env">ps.env(cb)</a>
+ * <a href="#pidstats-cgroups">ps.cgroups(cb)</a>
  * <a href="#pidstats-cwd">ps.cwd(cb)</a>
  * <a href="#pidstats-cwd">ps.argv(cb)</a>
  * <a href="#pidstats-fds">ps.fds(cb)</a>
@@ -213,6 +214,27 @@ console.log(ps);
   'EDITOR=vim',
   'npm_config_email=soldair@',
   'npm_config_json=' ]
+
+```
+
+<a name="pidstats-cgroups"></a>
+### ps.cgroups(cb)
+  - from /proc/pid/cgroups
+  - calls back with an object like this listing all the control groups for that PID 
+
+```js
+
+{ hugetlb: '/',
+  perf_event: '/docker/7f910e92bd4bdefe15c415c8177ff47ce842ca171839b5147bf8523a1c7467f4',
+  blkio: '/docker/7f910e92bd4bdefe15c415c8177ff47ce842ca171839b5147bf8523a1c7467f4',
+  freezer: '/docker/7f910e92bd4bdefe15c415c8177ff47ce842ca171839b5147bf8523a1c7467f4',
+  devices: '/docker/7f910e92bd4bdefe15c415c8177ff47ce842ca171839b5147bf8523a1c7467f4',
+  memory: '/docker/7f910e92bd4bdefe15c415c8177ff47ce842ca171839b5147bf8523a1c7467f4',
+  cpuacct: '/docker/7f910e92bd4bdefe15c415c8177ff47ce842ca171839b5147bf8523a1c7467f4',
+  cpu: '/docker/7f910e92bd4bdefe15c415c8177ff47ce842ca171839b5147bf8523a1c7467f4',
+  cpuset: '/',
+  'name=systemd': '/',
+  undefined: undefined }
 
 ```
 
