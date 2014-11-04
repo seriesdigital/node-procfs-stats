@@ -35,6 +35,7 @@ it would be so cool to have a higher level module that unifies system monitoring
  * <a href="#pidstats-fds">ps.fds(cb)</a>
  * <a href="#pidstats-threads">ps.threads(cb)</a>
  * <a href="#pidstats-thread">ps.thread(tid)</a>
+ * <a href="#cgroups">procfs.cgroups(cb)</a>
  * <a href="#cpu">procfs.cpu(cb)</a>
  * <a href="#fd">procfs.fd(cb)</a>
  * <a href="#tcp">procfs.tcp(cb)</a>
@@ -274,6 +275,25 @@ the exported function also has these "static" methods.
 
 var thread = ps.thread(tid);
 
+```
+
+<a name="cgroups"></a>
+### procfs.cgroups(cb)
+  - from /proc/cgroups
+  - calls back with a data object with control group names as keys and an array of their values
+
+```js
+{ '#subsys_name': [ 'hierarchy', 'num_cgroups', 'enabled' ],
+  cpuset: [ '3', '5', '1' ],
+  cpu: [ '4', '20', '1' ],
+  cpuacct: [ '5', '20', '1' ],
+  memory: [ '6', '20', '1' ],
+  devices: [ '7', '20', '1' ],
+  freezer: [ '8', '20', '1' ],
+  blkio: [ '9', '20', '1' ],
+  perf_event: [ '10', '20', '1' ],
+  hugetlb: [ '11', '5', '1' ],
+  '': [ undefined, undefined, undefined ] }
 ```
 
 <a name="cpu"></a>
